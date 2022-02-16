@@ -1,12 +1,11 @@
 import React, {Component} from "react";
-import {Button, Container, Form, Grid, Icon, Input, Message, Segment, Select} from "semantic-ui-react";
+import {Button, Container, Form, Icon, Input, Message, Select} from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import axios from 'axios';
 import moment from 'moment';
 
 import "react-datepicker/dist/react-datepicker.css";
 import {tags} from "../../constants";
-import Router from 'next/router'
 
 class ReservationNew extends Component {
     state = {
@@ -46,7 +45,6 @@ class ReservationNew extends Component {
         this.setState({loading: true, errorMessage: ""});
         await this.saveReservation()
         this.setState({loading: false});
-        //alert(this.context)
     };
 
     render() {

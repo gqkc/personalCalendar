@@ -1,5 +1,4 @@
 import Timeline from 'react-calendar-timeline'
-// make sure you include the timeline stylesheet or the timeline will not be styled
 import 'react-calendar-timeline/lib/Timeline.css'
 import moment from 'moment'
 import React, {Component} from "react";
@@ -23,6 +22,7 @@ class Home extends Component {
     async componentDidMount() {
         await this.getAvailabilities();
     }
+
     getColor(tag) {
         let idx = tags.indexOf("blue")
         if (tags.includes(tag)) {
@@ -30,6 +30,7 @@ class Home extends Component {
         }
         return colors[idx]
     }
+
     async getAvailabilities() {
         let av_response = await axios.get("api/availabilities");
         const avs = av_response.data;
@@ -80,6 +81,7 @@ class Home extends Component {
                             }
                         }
                         }
+
                     />
 
                 </div>
@@ -107,6 +109,7 @@ class Home extends Component {
                         <ReservationDelete reservationId={this.state.current}/>
                     </Modal.Content>
                 </Modal>
+
             </Layout>
 
         )

@@ -1,22 +1,40 @@
-import React from "react";
-import {Button, Menu} from 'semantic-ui-react'
+import React, {Component} from "react";
+import {Button, Header, Menu, Modal} from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
+import AvailabilityNew from "./availability/new";
 
-const HeaderCalendar = () =>
-    (
-        <Menu style={{marginTop: "10px"}}>
-            <a className="item" href="/">
-                <h3>Calendar</h3>
-            </a>
-            <a className="item" href="/stats">
-                <h3>Stats</h3>
-            </a>
-            <Menu.Item position="right">
-                <a position="right" className="button" href="/availability/new">
-                    <Button primary href="/availability/new" ><h3>Create availability</h3></Button>
+class HeaderCalendar extends Component {
+    state = {open: false}
+
+    render() {
+        return (
+            <Menu style={{marginTop: "10px"}}>
+                <a className="item" href="/">
+                    <h3>Calendar</h3>
                 </a>
-            </Menu.Item>
-        </Menu>
-    );
+                <a className="item" href="/stats">
+                    <h3>Stats</h3>
+                </a>
+                <Menu.Item position="right">
+
+                    <Modal
+                        size="tiny"
+                        closeIcon
+                        open={this.state.open}
+                        trigger={<Button primary><h3>Create availability</h3></Button>}
+                        onClose={() => this.setState({open: false})}
+                        onOpen={() => this.setState({open: true})}
+                    >
+                        <Header content='Create Slot!'/>
+                        <Modal.Content>
+                            <AvailabilityNew/>
+                        </Modal.Content>
+                    </Modal>
+
+                </Menu.Item>
+            </Menu>
+        )
+    }
+}
 export default HeaderCalendar;
 
