@@ -1,6 +1,7 @@
 import {Container} from "semantic-ui-react";
 import React from "react";
 import HeaderCalendar from "./header";
+import FooterCalendar from "./footer";
 
 /**
  * Serve as a layout, call it in views
@@ -11,10 +12,12 @@ import HeaderCalendar from "./header";
 const Layout = (props) => {
     return (
         <div>
-            <Container>
-                <HeaderCalendar/>
+            <HeaderCalendar/>
+            <Container style={{marginTop: 120}}>
                 {props.children}
             </Container>
+
+            <FooterCalendar/>
         </div>
     );
 };

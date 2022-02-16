@@ -11,13 +11,15 @@ class HeaderCalendar extends Component {
 
     render() {
         return (
-            <Menu style={{marginTop: "10px"}}>
-                <a className="item" href="/">
-                    <h3>Calendar</h3>
-                </a>
-                <a className="item" href="/stats">
-                    <h3>Stats</h3>
-                </a>
+            <Menu fixed='top' inverted>
+                <Menu.Item as='a' header href="/">
+                    Calendar
+                </Menu.Item>
+                <Menu.Item as='a' href="/stats">
+                    Stats
+                </Menu.Item>
+
+
                 <Menu.Item position="right">
 
                     <Modal
@@ -39,5 +41,6 @@ class HeaderCalendar extends Component {
         )
     }
 }
+
 export default HeaderCalendar;
 
