@@ -13,11 +13,16 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 // setting api routes
+/**
+ * Getting all reservations
+ */
 app.get('/reservations', (req, res) => {
     Reservation.findAll().then(reservations => res.json(reservations));
 })
 
-
+/**
+ * Search for reservation by email, start date, end date
+ */
 app.get('/reservations/search', async (req, res) => {
 
     let query = {};
@@ -40,6 +45,10 @@ app.get('/reservations/search', async (req, res) => {
         res.status(500).json({error: e})
     }
 })
+
+/**
+ * Aggregate reservation on group parameter
+ */
 app.get('/reservations/agg', async (req, res) => {
 
     let query = {};
@@ -67,6 +76,9 @@ app.get('/reservations/agg', async (req, res) => {
     }
 })
 
+/**
+ * Save reservation
+ */
 app.post('/reservations', async function (req, res) {
     const reservation = req.body
     const date = moment(reservation.start).format('DD-MM-YYYY')
@@ -86,10 +98,16 @@ app.post('/reservations', async function (req, res) {
     }
 });
 
+/**
+ * Get all availabilities with their reservations
+ */
 app.get('/availabilities', (req, res) => {
     Availabilities.findAll({include: ["reservations"]}).then(availabilities => res.json(availabilities));
 })
 
+/**
+ * search for availabilities
+ */
 app.get('/availabilities/search', async (req, res) => {
 
     let query = {};
@@ -113,6 +131,9 @@ app.get('/availabilities/search', async (req, res) => {
     }
 })
 
+/**
+ * add new availability
+ */
 app.post('/availabilities', async function (req, res) {
     const availability = req.body
     try {
@@ -127,7 +148,10 @@ app.post('/availabilities', async function (req, res) {
     }
 });
 
-
+/**
+ * Delete reservation by email and id
+ * The email serve as a confirmation before setting a real oauth authentication
+ */
 app.delete("/reservations", async function (req, res) {
     if (req.query.id && req.query.mail) {
         console.log("Deleting Reservation: " + req.query.id);
