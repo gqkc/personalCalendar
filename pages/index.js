@@ -57,7 +57,7 @@ class Home extends Component {
                 start_time: moment(av.start),
                 end_time: moment(av.end),
                 canMove: false,
-                itemProps: {className: 'ui positive', style: {background: "green", textAlign: "center"}}
+                itemProps: {}
             }
         });
         let res_response = await axios.get("api/reservations");
@@ -70,7 +70,7 @@ class Home extends Component {
                 start_time: moment(reservation.start),
                 end_time: moment(reservation.end),
                 canMove: false,
-                itemProps: {style: {background: this.getColor(reservation.tag), textAlign: "center"}}
+                itemProps: {style: {background: this.getColor(reservation.tag)}}
             }
         });
 
