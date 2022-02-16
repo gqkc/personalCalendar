@@ -7,6 +7,9 @@ import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 import {tags} from "../../constants";
 
+/**
+ * Represents a new reservation form
+ */
 class ReservationNew extends Component {
     state = {
         errorMessage: "",
@@ -18,7 +21,10 @@ class ReservationNew extends Component {
         end: "",
         tag: ""
     };
-
+    /**
+     * Save the reservation given the id in props
+     * @returns {Promise<void>}
+     */
     saveReservation = async () => {
         try {
             const date = moment(this.state.date)
@@ -40,6 +46,11 @@ class ReservationNew extends Component {
         }
     }
 
+    /**
+     * this function handles the saving of reservation
+     * @param event
+     * @returns {Promise<void>}
+     */
     onSubmit = async (event) => {
         event.preventDefault();
         this.setState({loading: true, errorMessage: ""});

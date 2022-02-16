@@ -6,12 +6,19 @@ import {Cell, Funnel, FunnelChart, LabelList, Legend, Pie, PieChart, Tooltip} fr
 import {colors} from "../constants";
 import axios from "axios";
 
+/**
+ * This view renders the statistics on all the reservations
+ */
 class Stats extends Component {
     state = {
         tags: [],
         emails: []
     }
 
+    /**
+     * Getting necessary data (tags, people) in state
+     * @returns {Promise<void>}
+     */
     async componentDidMount() {
 
         let tags = await axios.get("api/reservations/agg", {
@@ -27,6 +34,10 @@ class Stats extends Component {
         this.setState({tags: tags.data, emails: people.data})
     }
 
+    /**
+     * Renders the statistics view in grid form
+     * @returns {*}
+     */
     render() {
         return (<Layout>
                 <Container textAlign='center'>
@@ -46,7 +57,7 @@ class Stats extends Component {
                                 <Container center>
                                     <Header as='h3'>Tag pie chart</Header>
                                     <PieChart width={250} height={250}>
-                                        <Legend wrapperStyle={{fontSize: "10px"}}></Legend>
+                                        <Legend wrapperStyle={{fontSize: "10px"}}/>
                                         <Pie data={this.state.tags} dataKey="count" nameKey="value" cx="50%" cy="50%"
                                              outerRadius={50} fill="#8884d8">
 

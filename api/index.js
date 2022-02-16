@@ -43,7 +43,6 @@ app.get('/reservations/search', async (req, res) => {
 app.get('/reservations/agg', async (req, res) => {
 
     let query = {};
-    let group = [];
 
     if (req.query.email) {
         query.email = req.query.email
@@ -54,7 +53,7 @@ app.get('/reservations/agg', async (req, res) => {
     if (req.query.end) {
         query.start = {$lte: moment(req.query.end).toDate()}
     }
-    group = [req.query.group];
+    let group = [req.query.group];
     try {
         const results = await Reservation.findAll({
             where: query,
@@ -129,15 +128,24 @@ app.post('/availabilities', async function (req, res) {
 });
 
 
-app.delete("/reservations/:id", function (req, res) {
-    if (req.params.id) {
-        console.log("Deleting Reservation: " + req.params.id);
+app.delete("/reservations", async function (req, res) {
+    if (req.query.id && req.query.mail) {
+        console.log("Deleting Reservation: " + req.query.id);
+        const reservation = await Reservation.findOne({
+            where: {id: parseInt(req.query.id), email: req.query.mail}
+        })
+        if (reservation == null) {
+            return res.status(400).send("no record with this id and email")
+        }
         Reservation.destroy({
-            where: {id: parseInt(req.params.id)}
-        });
-        res.status(200).send();
+            where: {id: parseInt(req.query.id), email: req.query.mail}
+        }).then(() => {
+            return res.status(200).send({})
+        }).catch(() => {
+            return res.status(400).send("Not possible")
+        })
     } else {
-        res.status(400).send("Please specify a id");
+        res.status(400).send("Please specify an id and mail");
     }
 });
 
