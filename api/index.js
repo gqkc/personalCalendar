@@ -60,6 +60,7 @@ app.get('/reservations/agg', async (req, res) => {
             where: query,
             group: group,
             attributes: [[req.query.group, "value"], [sequelize.fn('COUNT', req.query.group), 'count']],
+            order: [[sequelize.literal('count'), "DESC"]]
         });
         res.json(results);
     } catch (e) {
@@ -70,7 +71,6 @@ app.get('/reservations/agg', async (req, res) => {
 app.post('/reservations', async function (req, res) {
     const reservation = req.body
     const date = moment(reservation.start).format('DD-MM-YYYY')
-    console.log(reservation.availabilityId)
     try {
         const resa = await Reservation.create({
             email: reservation.email,
@@ -130,11 +130,8 @@ app.post('/availabilities', async function (req, res) {
 
 
 app.delete("/reservations/:id", function (req, res) {
-    console.log(req.query)
-    console.log(req.params)
-
     if (req.params.id) {
-        console.log("Deleting Reservation: " + req.query.id);
+        console.log("Deleting Reservation: " + req.params.id);
         Reservation.destroy({
             where: {id: parseInt(req.params.id)}
         });
