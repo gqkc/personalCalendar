@@ -1,6 +1,10 @@
 # Calendar app
 This app is a self contained app with a express API and nextjs frontend. 
 
+## TODO
+- Set oauth authentication for the api
+- Improve design. Semantic ui react not as complete as react bootstrap 
+
 ## Getting Started
 
 First, run the API server: 
