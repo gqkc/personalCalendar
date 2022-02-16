@@ -54,7 +54,7 @@ sequelize.sync({force: true})
             availabilityId: availability.id
         },
         {
-            email: 'guillaume.quispe@gmail.com',
+            email: 'newuser@gmail.com',
             title: 'meeting',
             start: moment().add(4, "hours"),
             end: moment().add(6, "hours"),
@@ -63,7 +63,7 @@ sequelize.sync({force: true})
 
         },
         {
-            email: 'guillaume.quispe@gmail.com',
+            email: 'newuser@gmail.com',
             title: 'play',
             start: new Date(2022, 2, 1, 14, 0, 0, 0),
             end: new Date(2022, 2, 1, 16, 0, 0, 0),

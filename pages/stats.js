@@ -7,7 +7,13 @@ import {colors} from "../constants";
 import axios from "axios";
 
 class Stats extends Component {
-    static async getInitialProps(props) {
+    state = {
+        tags: [],
+        emails: []
+    }
+
+    async componentDidMount() {
+
         let tags = await axios.get("api/reservations/agg", {
             params: {
                 group: 'tag'
@@ -18,7 +24,7 @@ class Stats extends Component {
                 group: 'email'
             }
         })
-        return {tags: tags.data, emails: people.data}
+        this.setState({tags: tags.data, emails: people.data})
     }
 
     render() {
@@ -31,7 +37,7 @@ class Stats extends Component {
                             <Grid.Column>
                                 <Header as='h3'>Tag cloud</Header>
                                 <TagCloud
-                                    tags={this.props.tags}
+                                    tags={this.state.tags}
                                     minSize={20}
                                     maxSize={100}
                                 />
@@ -41,11 +47,11 @@ class Stats extends Component {
                                     <Header as='h3'>Tag pie chart</Header>
                                     <PieChart width={250} height={250}>
                                         <Legend wrapperStyle={{fontSize: "10px"}}></Legend>
-                                        <Pie data={this.props.tags} dataKey="count" nameKey="value" cx="50%" cy="50%"
+                                        <Pie data={this.state.tags} dataKey="count" nameKey="value" cx="50%" cy="50%"
                                              outerRadius={50} fill="#8884d8">
 
                                             {
-                                                this.props.tags.map((entry, index) => <Cell
+                                                this.state.tags.map((entry, index) => <Cell
                                                     fill={colors[index % colors.length]}/>)
                                             }
                                         </Pie>
@@ -59,7 +65,7 @@ class Stats extends Component {
                                     <Funnel
                                         dataKey="count"
                                         nameKey="value"
-                                        data={this.props.emails}
+                                        data={this.state.emails}
                                         isAnimationActive
                                     >
                                         <LabelList style={{fontSize: "10px"}} position="center" fill="#000"
