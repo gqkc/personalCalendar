@@ -7,6 +7,9 @@ import moment from 'moment';
 
 import "react-datepicker/dist/react-datepicker.css";
 
+/**
+ * Represents a new availability form
+ */
 class AvailabilityNew extends Component {
     state = {
         errorMessage: "",
@@ -16,7 +19,10 @@ class AvailabilityNew extends Component {
         dateStart: new Date(),
         dateEnd: new Date()
     };
-
+    /**
+     * save the availability by calling the API
+     * @returns {Promise<void>}
+     */
     save = async () => {
         try {
             const startDate = moment(this.state.dateStart).set("hour", this.state.start).set("minute", 0);
@@ -28,7 +34,11 @@ class AvailabilityNew extends Component {
             this.setState({errorMessage: err.message});
         }
     }
-
+    /**
+     * This function handle the saving of availability
+     * @param event
+     * @returns {Promise<void>}
+     */
     onSubmit = async (event) => {
         event.preventDefault();
         this.setState({loading: true, errorMessage: ""});

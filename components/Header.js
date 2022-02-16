@@ -3,6 +3,9 @@ import {Button, Header, Menu, Modal} from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import AvailabilityNew from "./availability/new";
 
+/**
+ * Header of the calendar with links in the navbar
+ */
 class HeaderCalendar extends Component {
     state = {open: false}
 

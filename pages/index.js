@@ -4,12 +4,14 @@ import moment from 'moment'
 import React, {Component} from "react";
 import Layout from "../components/Layout";
 import axios from 'axios';
-import {Header, Modal} from "semantic-ui-react";
+import {Header, Modal, Segment} from "semantic-ui-react";
 import ReservationNew from "../components/reservation/new";
 import ReservationDelete from "../components/reservation/delete";
 import {colors, tags} from "../constants";
 
-
+/**
+ * Main entry point rendering the calendar
+ */
 class Home extends Component {
     state = {
         availabilities: [],
@@ -19,10 +21,19 @@ class Home extends Component {
         current: ""
     };
 
+    /**
+     * Populate availabilities on did mount
+     * @returns {Promise<void>}
+     */
     async componentDidMount() {
         await this.getAvailabilities();
     }
 
+    /**
+     * Getting the tag associated color
+     * @param tag: tag of the reservation
+     * @returns string: color of the tag
+     */
     getColor(tag) {
         let idx = tags.indexOf("blue")
         if (tags.includes(tag)) {
@@ -31,10 +42,14 @@ class Home extends Component {
         return colors[idx]
     }
 
+    /**
+     * Populate state variables with availabilities and reservations
+     * @returns undefined
+     */
     async getAvailabilities() {
         let av_response = await axios.get("api/availabilities");
         const avs = av_response.data;
-        const availabilities = avs.map((av, i) => {
+        const availabilities = avs.map(av => {
             return {
                 id: -av.id,
                 group: 1,
@@ -47,7 +62,7 @@ class Home extends Component {
         });
         let res_response = await axios.get("api/reservations");
         const res = res_response.data;
-        const reservations = res.map((reservation, i) => {
+        const reservations = res.map(reservation => {
             return {
                 id: reservation.id,
                 group: 2,
@@ -62,12 +77,15 @@ class Home extends Component {
         this.setState({availabilities: availabilities, reservations: reservations});
     }
 
-
+    /**
+     * Render the layout with the calendar
+     * @returns {*}
+     */
     render() {
         const groups = [{id: 1, title: 'Availabilities', height: 100}, {id: 2, title: 'Bookings', height: 100}]
         return (
             <Layout>
-                <div>
+                <Segment>
                     <Timeline
                         groups={groups}
                         items={[...this.state.availabilities, ...this.state.reservations]}
@@ -84,7 +102,7 @@ class Home extends Component {
 
                     />
 
-                </div>
+                </Segment>
                 <Modal
                     size="tiny"
                     closeIcon
@@ -101,7 +119,10 @@ class Home extends Component {
                     size="mini"
                     closeIcon
                     open={this.state.openResa}
-                    onClose={() => this.setState({openResa: false})}
+                    onClose={() => {
+                        this.setState({openResa: false});
+                        window.location.replace("/")
+                    }}
                     onOpen={() => this.setState({openResa: true})}
                 >
                     <Header content='Delete Reservation'/>
