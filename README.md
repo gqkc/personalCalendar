@@ -23,5 +23,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ![Alt text](public/calendar.png?raw=true "Calendar")
 ![Alt text](public/stats.png?raw=true "stats")
 ![Alt text](public/slotform.png?raw=true "slot")
-![Alt text](public/reservationform.png?raw=true "resa")
+![Alt text](public/deleteresa.png?raw=true "resa")
 
