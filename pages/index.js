@@ -4,7 +4,7 @@ import moment from 'moment'
 import React, {Component} from "react";
 import Layout from "../components/Layout";
 import axios from 'axios';
-import {Header, Modal, Segment} from "semantic-ui-react";
+import {Container, Divider, Header, Modal, Segment} from "semantic-ui-react";
 import ReservationNew from "../components/reservation/new";
 import ReservationDelete from "../components/reservation/delete";
 import {colors, tags} from "../constants";
@@ -85,52 +85,55 @@ class Home extends Component {
         const groups = [{id: 1, title: 'Availabilities', height: 100}, {id: 2, title: 'Bookings', height: 100}]
         return (
             <Layout>
-                <Segment>
-                    <Timeline
-                        groups={groups}
-                        items={[...this.state.availabilities, ...this.state.reservations]}
-                        defaultTimeStart={moment().add(-12, 'hour')}
-                        defaultTimeEnd={moment().add(12, 'hour')}
-                        onItemClick={(itemId, e, time) => {
-                            if (itemId > 0) {
-                                this.setState({openResa: true, current: itemId})
-                            } else {
-                                this.setState({current: itemId, open: true})
+                <Container textAlign='center'>
+                    <h2>Calendar</h2>
+                    <Divider/>
+                    <Segment>
+                        <Timeline
+                            groups={groups}
+                            items={[...this.state.availabilities, ...this.state.reservations]}
+                            defaultTimeStart={moment().add(-12, 'hour')}
+                            defaultTimeEnd={moment().add(12, 'hour')}
+                            onItemClick={(itemId, e, time) => {
+                                if (itemId > 0) {
+                                    this.setState({openResa: true, current: itemId})
+                                } else {
+                                    this.setState({current: itemId, open: true})
+                                }
                             }
-                        }
-                        }
+                            }
 
-                    />
+                        />
+                    </Segment>
+                    <Modal
+                        size="tiny"
+                        closeIcon
+                        open={this.state.open}
+                        onClose={() => this.setState({open: false})}
+                        onOpen={() => this.setState({open: true})}
+                    >
+                        <Header content='Book meeting'/>
+                        <Modal.Content>
+                            <ReservationNew availabilityId={this.state.current}/>
+                        </Modal.Content>
+                    </Modal>
+                    <Modal
+                        size="mini"
+                        closeIcon
+                        open={this.state.openResa}
+                        onClose={() => {
+                            this.setState({openResa: false});
+                            window.location.replace("/")
+                        }}
+                        onOpen={() => this.setState({openResa: true})}
+                    >
+                        <Header content='Delete Reservation'/>
+                        <Modal.Content>
+                            <ReservationDelete reservationId={this.state.current}/>
+                        </Modal.Content>
+                    </Modal>
 
-                </Segment>
-                <Modal
-                    size="tiny"
-                    closeIcon
-                    open={this.state.open}
-                    onClose={() => this.setState({open: false})}
-                    onOpen={() => this.setState({open: true})}
-                >
-                    <Header content='Book meeting'/>
-                    <Modal.Content>
-                        <ReservationNew availabilityId={this.state.current}/>
-                    </Modal.Content>
-                </Modal>
-                <Modal
-                    size="mini"
-                    closeIcon
-                    open={this.state.openResa}
-                    onClose={() => {
-                        this.setState({openResa: false});
-                        window.location.replace("/")
-                    }}
-                    onOpen={() => this.setState({openResa: true})}
-                >
-                    <Header content='Delete Reservation'/>
-                    <Modal.Content>
-                        <ReservationDelete reservationId={this.state.current}/>
-                    </Modal.Content>
-                </Modal>
-
+                </Container>
             </Layout>
 
         )

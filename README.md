@@ -26,9 +26,9 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Play
-![Alt text](public/calendar.png?raw=true "Calendar")
-![Alt text](public/stats.png?raw=true "stats")
-![Alt text](public/createslot.png?raw=true "slot")
-![Alt text](public/createresa.png?raw=true "createresa")
-![Alt text](public/deleteresa.png?raw=true "deleteresa")
+![Alt text](public/app/calendar.png?raw=true "Calendar")
+![Alt text](public/app/stats.png?raw=true "stats")
+![Alt text](public/app/createslot.png?raw=true "slot")
+![Alt text](public/app/createresa.png?raw=true "createresa")
+![Alt text](public/app/deleteresa.png?raw=true "deleteresa")
 
