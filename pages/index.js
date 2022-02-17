@@ -85,7 +85,10 @@ class Home extends Component {
      * @returns {*}
      */
     checkAdmin = (user) => {
-        if (process.env.ADMIN == user.login) {
+        console.log(user.login)
+        console.log(process.env.ADMIN)
+        console.log(process.env)
+        if (process.env.NEXT_PUBLIC_ADMIN == user.login) {
             return true;
         } else {
             return false;
@@ -106,7 +109,7 @@ class Home extends Component {
                         size="tiny"
                         closeIcon
                         open={this.state.open}
-                        trigger={<Button primary disabled={this.checkAdmin(this.props.user)}><h3>Create
+                        trigger={<Button primary disabled={!this.checkAdmin(this.props.user)}><h3>Create
                             availability</h3></Button>}
                         onClose={() => this.setState({open: false})}
                         onOpen={() => this.setState({open: true})}
