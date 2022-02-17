@@ -4,10 +4,11 @@ import moment from 'moment'
 import React, {Component} from "react";
 import Layout from "../components/Layout";
 import axios from 'axios';
-import {Container, Divider, Header, Modal, Segment} from "semantic-ui-react";
+import {Button, Container, Divider, Header, Modal, Segment} from "semantic-ui-react";
 import ReservationNew from "../components/reservation/new";
 import ReservationDelete from "../components/reservation/delete";
 import {colors, tags} from "../constants";
+import AvailabilityNew from "../components/availability/new";
 
 /**
  * Main entry point rendering the calendar
@@ -78,6 +79,18 @@ class Home extends Component {
         this.setState({availabilities: availabilities, reservations: reservations});
     }
 
+    /**
+     * Returns True if login from github equals the ADMIN in .env file
+     * @param user
+     * @returns {*}
+     */
+    checkAdmin = (user) => {
+        if (process.env.ADMIN == user.login) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Render the layout with the calendar
@@ -89,6 +102,20 @@ class Home extends Component {
             <Layout>
                 <Container textAlign='center'>
                     <h2>Calendar</h2>
+                    <Modal
+                        size="tiny"
+                        closeIcon
+                        open={this.state.open}
+                        trigger={<Button primary disabled={this.checkAdmin(this.props.user)}><h3>Create
+                            availability</h3></Button>}
+                        onClose={() => this.setState({open: false})}
+                        onOpen={() => this.setState({open: true})}
+                    >
+                        <Header content='Create Slot!'/>
+                        <Modal.Content>
+                            <AvailabilityNew/>
+                        </Modal.Content>
+                    </Modal>
                     <Divider/>
                     <Segment>
                         <Timeline

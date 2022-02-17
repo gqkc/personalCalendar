@@ -8,6 +8,11 @@ import axios from "axios";
 import {Button} from "semantic-ui-react";
 import Home from "./index";
 
+/**
+ * Handles the auth process and show app when authenticated
+ * @returns {*}
+ * @constructor
+ */
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
@@ -53,7 +58,7 @@ function App() {
                 </>
             ) : (
                 <>
-                    <Home/>
+                    <Home user={user}/>
                 </>
             )}
         </div>
