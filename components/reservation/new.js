@@ -39,7 +39,7 @@ class ReservationNew extends Component {
                 availabilityId: this.props.availabilityId
             }
             await axios.post("/api/reservations", reservation)
-            window.location.replace("/")
+            window.location.reload(false)
 
         } catch (err) {
             this.setState({errorMessage: err.message});

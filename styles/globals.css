@@ -15,13 +15,3 @@ a {
     box-sizing: border-box;
 }
 
-.rct-item {
-    padding-top: 30px !important;
-    padding-bottom: 30px !important;
-    text-align: center
-}
-
-.rct-item-content {
-    overflow: visible !important;
-    text-align: center
-}

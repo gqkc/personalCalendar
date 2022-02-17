@@ -1,0 +1,15 @@
+.rct-item {
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    text-align: center
+}
+
+.rct-item-content {
+    overflow: visible !important;
+    text-align: center
+}
+
+.react-calendar-timeline .rct-header-root {
+    background-color: rgba(0, 0, 0, .85) !important;
+    color:black !important;
+}

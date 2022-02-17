@@ -60,6 +60,7 @@ class Home extends Component {
                 itemProps: {}
             }
         });
+
         let res_response = await axios.get("api/reservations");
         const res = res_response.data;
         const reservations = res.map(reservation => {
@@ -76,6 +77,7 @@ class Home extends Component {
 
         this.setState({availabilities: availabilities, reservations: reservations});
     }
+
 
     /**
      * Render the layout with the calendar
@@ -123,7 +125,7 @@ class Home extends Component {
                         open={this.state.openResa}
                         onClose={() => {
                             this.setState({openResa: false});
-                            window.location.replace("/")
+                            window.location.reload(false)
                         }}
                         onOpen={() => this.setState({openResa: true})}
                     >
