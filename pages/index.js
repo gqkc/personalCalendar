@@ -1,139 +1,67 @@
-import Timeline from 'react-calendar-timeline'
 import 'react-calendar-timeline/lib/Timeline.css'
-import moment from 'moment'
 import React, {Component} from "react";
 import Layout from "../components/Layout";
-import axios from 'axios';
-import {Container, Divider, Header, Modal, Segment} from "semantic-ui-react";
-import ReservationNew from "../components/reservation/new";
-import ReservationDelete from "../components/reservation/delete";
-import {colors, tags} from "../constants";
+import {Button, Header, Modal, Tab} from "semantic-ui-react";
+import Calendar from "../components/calendar";
+import Stats from "../components/stats";
+import AvailabilityNew from "../components/availability/new";
 
 /**
- * Main entry point rendering the calendar
+ * Main entry point
  */
 class Home extends Component {
-    state = {
-        availabilities: [],
-        reservations: [],
-        open: false,
-        openResa: false,
-        current: ""
-    };
+    state={open:false}
 
     /**
-     * Populate availabilities on did mount
-     * @returns {Promise<void>}
+     * Render a modal to create availability
+     * @returns {*}
      */
-    async componentDidMount() {
-        await this.getAvailabilities();
+    renderCreateAvailability() {
+        return (<Modal
+            size="tiny"
+            closeIcon
+            open={this.state.open}
+            trigger={<Button style={{float:"right"}} primary disabled={!this.checkAdmin(this.props.user)}><h3>Create
+                availability</h3></Button>}
+            onClose={() => this.setState({open: false})}
+            onOpen={() => this.setState({open: true})}
+        >
+            <Header content='Create Slot!'/>
+            <Modal.Content>
+                <AvailabilityNew/>
+            </Modal.Content>
+        </Modal>)
     }
 
     /**
-     * Getting the tag associated color
-     * @param tag: tag of the reservation
-     * @returns string: color of the tag
+     * Returns True if login from github equals the ADMIN in .env file
+     * @param user
+     * @returns {*}
      */
-    getColor(tag) {
-        let idx = tags.indexOf("blue")
-        if (tags.includes(tag)) {
-            idx = tags.indexOf(tag)
+    checkAdmin = (user) => {
+        console.log(user.login)
+        console.log(process.env.ADMIN)
+        console.log(process.env)
+        if (process.env.NEXT_PUBLIC_ADMIN == user.login) {
+            return true;
+        } else {
+            return false;
         }
-        return colors[idx]
     }
 
     /**
-     * Populate state variables with availabilities and reservations
-     * @returns undefined
-     */
-    async getAvailabilities() {
-        let av_response = await axios.get("api/availabilities");
-        const avs = av_response.data;
-        const availabilities = avs.map(av => {
-            return {
-                id: -av.id,
-                group: 1,
-                title: "Free!",
-                start_time: moment(av.start),
-                end_time: moment(av.end),
-                canMove: false,
-                itemProps: {className: 'ui positive', style: {background: "green", textAlign: "center"}}
-            }
-        });
-        let res_response = await axios.get("api/reservations");
-        const res = res_response.data;
-        const reservations = res.map(reservation => {
-            return {
-                id: reservation.id,
-                group: 2,
-                title: reservation.title,
-                start_time: moment(reservation.start),
-                end_time: moment(reservation.end),
-                canMove: false,
-                itemProps: {style: {background: this.getColor(reservation.tag), textAlign: "center"}}
-            }
-        });
-
-        this.setState({availabilities: availabilities, reservations: reservations});
-    }
-
-    /**
-     * Render the layout with the calendar
+     * Render the layout with the calendar and stats
      * @returns {*}
      */
     render() {
-        const groups = [{id: 1, title: 'Availabilities', height: 100}, {id: 2, title: 'Bookings', height: 100}]
+        const panes = [
+            {menuItem: 'Calendar', render: () => <Tab.Pane><Calendar user={this.props.user}/></Tab.Pane>},
+            {menuItem: 'Stats', render: () => <Tab.Pane> <Stats user={this.props.user}/></Tab.Pane>},
+        ]
         return (
             <Layout>
-                <Container textAlign='center'>
-                    <h2>Calendar</h2>
-                    <Divider/>
-                    <Segment>
-                        <Timeline
-                            groups={groups}
-                            items={[...this.state.availabilities, ...this.state.reservations]}
-                            defaultTimeStart={moment().add(-12, 'hour')}
-                            defaultTimeEnd={moment().add(12, 'hour')}
-                            onItemClick={(itemId, e, time) => {
-                                if (itemId > 0) {
-                                    this.setState({openResa: true, current: itemId})
-                                } else {
-                                    this.setState({current: itemId, open: true})
-                                }
-                            }
-                            }
-
-                        />
-                    </Segment>
-                    <Modal
-                        size="tiny"
-                        closeIcon
-                        open={this.state.open}
-                        onClose={() => this.setState({open: false})}
-                        onOpen={() => this.setState({open: true})}
-                    >
-                        <Header content='Book meeting'/>
-                        <Modal.Content>
-                            <ReservationNew availabilityId={this.state.current}/>
-                        </Modal.Content>
-                    </Modal>
-                    <Modal
-                        size="mini"
-                        closeIcon
-                        open={this.state.openResa}
-                        onClose={() => {
-                            this.setState({openResa: false});
-                            window.location.replace("/")
-                        }}
-                        onOpen={() => this.setState({openResa: true})}
-                    >
-                        <Header content='Delete Reservation'/>
-                        <Modal.Content>
-                            <ReservationDelete reservationId={this.state.current}/>
-                        </Modal.Content>
-                    </Modal>
-
-                </Container>
+                {this.renderCreateAvailability()}
+                <Tab panes={panes}/>
             </Layout>
 
         )
