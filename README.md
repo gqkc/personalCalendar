@@ -3,7 +3,8 @@ This app is a self contained app with a express API and nextjs frontend.
 
 ## TODO
 - Improve oauth with framework
-- add stats
+- Add tests for the api and frontend
+- Add stats
 - Many to many relationship between reservation and tag
 - Move API to web3
 
