@@ -4,11 +4,10 @@ import moment from 'moment'
 import React, {Component} from "react";
 import Layout from "../components/Layout";
 import axios from 'axios';
-import {Button, Container, Divider, Header, Modal, Segment} from "semantic-ui-react";
+import {Container, Divider, Header, Modal, Segment} from "semantic-ui-react";
 import ReservationNew from "../components/reservation/new";
 import ReservationDelete from "../components/reservation/delete";
 import {colors, tags} from "../constants";
-import AvailabilityNew from "../components/availability/new";
 
 /**
  * Main entry point rendering the calendar
@@ -58,10 +57,9 @@ class Home extends Component {
                 start_time: moment(av.start),
                 end_time: moment(av.end),
                 canMove: false,
-                itemProps: {}
+                itemProps: {className: 'ui positive', style: {background: "green", textAlign: "center"}}
             }
         });
-
         let res_response = await axios.get("api/reservations");
         const res = res_response.data;
         const reservations = res.map(reservation => {
@@ -72,24 +70,11 @@ class Home extends Component {
                 start_time: moment(reservation.start),
                 end_time: moment(reservation.end),
                 canMove: false,
-                itemProps: {style: {background: this.getColor(reservation.tag)}}
+                itemProps: {style: {background: this.getColor(reservation.tag), textAlign: "center"}}
             }
         });
 
         this.setState({availabilities: availabilities, reservations: reservations});
-    }
-
-    /**
-     * Returns True if login from github equals the ADMIN in .env file
-     * @param user
-     * @returns {*}
-     */
-    checkAdmin = (user) => {
-        if (process.env.ADMIN == user.login) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -102,20 +87,6 @@ class Home extends Component {
             <Layout>
                 <Container textAlign='center'>
                     <h2>Calendar</h2>
-                    <Modal
-                        size="tiny"
-                        closeIcon
-                        open={this.state.open}
-                        trigger={<Button primary disabled={this.checkAdmin(this.props.user)}><h3>Create
-                            availability</h3></Button>}
-                        onClose={() => this.setState({open: false})}
-                        onOpen={() => this.setState({open: true})}
-                    >
-                        <Header content='Create Slot!'/>
-                        <Modal.Content>
-                            <AvailabilityNew/>
-                        </Modal.Content>
-                    </Modal>
                     <Divider/>
                     <Segment>
                         <Timeline
@@ -152,7 +123,7 @@ class Home extends Component {
                         open={this.state.openResa}
                         onClose={() => {
                             this.setState({openResa: false});
-                            window.location.reload(false)
+                            window.location.replace("/")
                         }}
                         onOpen={() => this.setState({openResa: true})}
                     >
