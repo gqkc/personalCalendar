@@ -13,7 +13,7 @@ const Layout = (props) => {
     return (
         <div>
             <HeaderCalendar/>
-            <Container style={{marginTop: 200}}>
+            <Container style={{marginTop: 70}}>
                 {props.children}
             </Container>
 

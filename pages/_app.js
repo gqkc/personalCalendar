@@ -1,11 +1,14 @@
 import '../styles/globals.css'
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import {Button} from "semantic-ui-react";
 
 /**
  * Handles the auth process and show app when authenticated
  * @returns {*}
  * @constructor
  */
-function App({ Component, pageProps }) {
+function App({Component, pageProps}) {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
@@ -13,7 +16,6 @@ function App({ Component, pageProps }) {
         const token = new URLSearchParams(window.location.search).get(
             "access_token"
         );
-
         axios
             .get("http://localhost:8010/proxy/user", {
                 headers: {
@@ -23,8 +25,12 @@ function App({ Component, pageProps }) {
             .then((res) => {
                 setUser(res.data);
                 console.log(res.data)
-                pageProps.user=res.data
+                pageProps.user = res.data
                 setLoggedIn(true);
+                //localStorage.setItem("user", res.data);
+                //localStorage.setItem("loggedin", true);
+
+
             })
             .catch((error) => {
                 console.log("error " + error);

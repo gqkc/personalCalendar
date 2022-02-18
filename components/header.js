@@ -9,7 +9,6 @@ class HeaderCalendar extends Component {
     state = {open: false}
 
     static async getInitialProps(props) {
-        console.log(props)
         return props
     }
 
@@ -18,9 +17,6 @@ class HeaderCalendar extends Component {
             <Menu fixed='top' inverted>
                 <Menu.Item as='a' header href="/">
                     Calendar
-                </Menu.Item>
-                <Menu.Item as='a' href="/stats">
-                    Stats
                 </Menu.Item>
             </Menu>
         )
