@@ -2,9 +2,9 @@
 This app is a self contained app with a express API and nextjs frontend. 
 
 ## TODO
-- Set oauth authentication for the api
-- Improve design. Semantic ui react not as complete as react bootstrap (native datepicker for example)
+- Improve oauth with framework
 - add stats
+- Many to many relationship between reservation and tag
 - Move API to web3
 
 ## Getting Started
@@ -15,6 +15,11 @@ cd api
 node index.js
 ```
 
+Temporary: run the proxy to make oauth github authentication: 
+```bash
+npm install -g --save local-cors-proxy
+ lcp --proxyUrl https://api.github.com/
+```
 
 Second, run the development server:
 
@@ -23,9 +28,10 @@ npm run dev
 ```
 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3002](http://localhost:3002) with your browser to see the result.
 
 ## Play
+![Alt text](public/app/signin.png?raw=true "Signin")
 ![Alt text](public/app/calendar.png?raw=true "Calendar")
 ![Alt text](public/app/stats.png?raw=true "stats")
 ![Alt text](public/app/createslot.png?raw=true "slot")
