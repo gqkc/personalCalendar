@@ -5,7 +5,6 @@ const availabilityapi = require("./model/availability");
 const db = require('./database');
 const express = require('express');
 
-
 const app = express();
 // Middleware
 const bodyParser = require('body-parser');
