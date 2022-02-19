@@ -5,10 +5,14 @@ require('dotenv').config()
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const GITHUB_URL = process.env.GITHUB_URL;
+const APP_URL = process.env.APP_URL;
 
 
 const oauthredirect = (app) => {
     app.use(cors({credentials: true, origin: true}));
+    console.log(`${GITHUB_URL}`)
+    console.log(`${CLIENT_ID}`)
+    console.log(`${GITHUB_URL}?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`)
 
     app.get("/oauth/redirect", (req, res) => {
         axios({
@@ -19,7 +23,7 @@ const oauthredirect = (app) => {
             },
         }).then((response) => {
             res.redirect(
-                `http://localhost:3002?access_token=${response.data.access_token}`
+                `${APP_URL}?access_token=${response.data.access_token}`
             );
         });
     });

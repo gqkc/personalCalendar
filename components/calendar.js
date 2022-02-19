@@ -1,5 +1,6 @@
 import Timeline from 'react-calendar-timeline'
 import 'react-calendar-timeline/lib/Timeline.css'
+
 import moment from 'moment'
 import React, {Component} from "react";
 import axios from 'axios';
@@ -7,6 +8,7 @@ import {Container, Header, Modal, Segment} from "semantic-ui-react";
 import ReservationNew from "../components/reservation/new";
 import ReservationDelete from "../components/reservation/delete";
 import {colors, tags} from "../constants";
+
 
 /**
  * Main entry point rendering the calendar

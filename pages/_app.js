@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import '../styles/calendar.css'
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Button, Container} from "semantic-ui-react";
@@ -27,9 +28,6 @@ function App({Component, pageProps}) {
                 console.log(res.data)
                 pageProps.user = res.data
                 setLoggedIn(true);
-                //localStorage.setItem("user", res.data);
-                //localStorage.setItem("loggedin", true);
-
 
             })
             .catch((error) => {
