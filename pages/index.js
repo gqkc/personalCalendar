@@ -1,7 +1,7 @@
 import 'react-calendar-timeline/lib/Timeline.css'
 import React, {Component} from "react";
 import Layout from "../components/Layout";
-import {Button, Header, Modal, Tab} from "semantic-ui-react";
+import {Button, Container, Header, Modal, Tab} from "semantic-ui-react";
 import Calendar from "../components/calendar";
 import Stats from "../components/stats";
 import AvailabilityNew from "../components/availability/new";
@@ -10,7 +10,7 @@ import AvailabilityNew from "../components/availability/new";
  * Main entry point
  */
 class Home extends Component {
-    state={open:false}
+    state = {open: false}
 
     /**
      * Render a modal to create availability
@@ -21,7 +21,7 @@ class Home extends Component {
             size="tiny"
             closeIcon
             open={this.state.open}
-            trigger={<Button style={{float:"right"}} primary disabled={!this.checkAdmin(this.props.user)}><h3>Create
+            trigger={<Button style={{float: "right"}} primary disabled={!this.checkAdmin(this.props.user)}><h3>Create
                 availability</h3></Button>}
             onClose={() => this.setState({open: false})}
             onOpen={() => this.setState({open: true})}
@@ -39,9 +39,6 @@ class Home extends Component {
      * @returns {*}
      */
     checkAdmin = (user) => {
-        console.log(user.login)
-        console.log(process.env.ADMIN)
-        console.log(process.env)
         if (process.env.NEXT_PUBLIC_ADMIN == user.login) {
             return true;
         } else {
@@ -59,11 +56,10 @@ class Home extends Component {
             {menuItem: 'Stats', render: () => <Tab.Pane> <Stats user={this.props.user}/></Tab.Pane>},
         ]
         return (
-            <Layout>
+            <Container>
                 {this.renderCreateAvailability()}
                 <Tab panes={panes}/>
-            </Layout>
-
+            </Container>
         )
     }
 

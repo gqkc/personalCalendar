@@ -16,9 +16,10 @@ const Layout = (props) => {
             <Container style={{marginTop: 70}}>
                 {props.children}
             </Container>
-
             <FooterCalendar/>
+
         </div>
-    );
+
+);
 };
 export default Layout;

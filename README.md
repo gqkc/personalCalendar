@@ -22,6 +22,9 @@ npm install -g --save local-cors-proxy
  lcp --proxyUrl https://api.github.com/
 ```
 
+Complete the .env files (.env and api/.env) with your values. 
+In particular the set the NEXT_PUBLIC_ADMIN to your github login. 
+
 Second, run the development server:
 
 ```bash
@@ -33,6 +36,7 @@ Open [http://localhost:3002](http://localhost:3002) with your browser to see the
 
 ## Play
 ![Alt text](public/app/signin.png?raw=true "Signin")
+![Alt text](public/app/github.png?raw=true "Github")
 ![Alt text](public/app/calendar.png?raw=true "Calendar")
 ![Alt text](public/app/stats.png?raw=true "stats")
 ![Alt text](public/app/createslot.png?raw=true "slot")
