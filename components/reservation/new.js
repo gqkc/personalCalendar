@@ -36,7 +36,7 @@ class ReservationNew extends Component {
                 start: startDate,
                 end: endDate,
                 title: this.state.title,
-                availabilityId: this.props.availabilityId
+                availabilityId: Math.abs(this.props.availabilityId)
             }
             await axios.post("/api/reservations", reservation)
             window.location.reload(false)
@@ -67,59 +67,59 @@ class ReservationNew extends Component {
         });
         return (
             <Container>
-                    <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
-                        <h3>Create Reservation</h3>
+                <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
+                    <h3>Create Reservation</h3>
 
-                        <Form.Field>
-                            <label>Date</label>
+                    <Form.Field>
+                        <label>Date</label>
 
-                            <DatePicker selected={this.state.date}
-                                        onChange={(date) => {
-                                            this.setState({date: date})
-                                        }}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <label>Title</label>
-                            <Input
-                                value={this.state.title}
-                                onChange={(event) =>
-                                    this.setState({title: event.target.value})
-                                }
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>Start time</label>
-                            <Select placeholder='Time' options={hours} onChange={(start) => {
-                                this.setState({start: start})
-                            }}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <label>End time</label>
-                            <Select placeholder='Time' options={hours} onChange={(end) => {
-                                this.setState({end: end})
-                            }}/>
-                        </Form.Field>
-                        <Form.Field>
-                            <label>Email</label>
-                            <Input iconPosition='left' placeholder='Email' onChange={(event) => {
-                                this.setState({email: event.target.value})
-                            }}>
-                                <Icon name='at'/>
-                                <input/>
-                            </Input>
-                        </Form.Field>
-                        <Form.Field>
-                            <label>Tag</label>
-                            <Select options={tags_items} onChange={(tag) => {
-                                this.setState({tag: tag})
-                            }}/>
-                        </Form.Field>
+                        <DatePicker selected={this.state.date}
+                                    onChange={(date) => {
+                                        this.setState({date: date})
+                                    }}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Title</label>
+                        <Input
+                            value={this.state.title}
+                            onChange={(event) =>
+                                this.setState({title: event.target.value})
+                            }
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Start time</label>
+                        <Select placeholder='Time' options={hours} onChange={(start) => {
+                            this.setState({start: start})
+                        }}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>End time</label>
+                        <Select placeholder='Time' options={hours} onChange={(end) => {
+                            this.setState({end: end})
+                        }}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Email</label>
+                        <Input iconPosition='left' placeholder='Email' onChange={(event) => {
+                            this.setState({email: event.target.value})
+                        }}>
+                            <Icon name='at'/>
+                            <input/>
+                        </Input>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Tag</label>
+                        <Select options={tags_items} onChange={(tag) => {
+                            this.setState({tag: tag})
+                        }}/>
+                    </Form.Field>
 
-                        <Message error header="Oops!" content={this.state.errorMessage}/>
-                        <Button loading={this.state.loading} primary>
-                            Create!
-                        </Button>
-                    </Form>
+                    <Message error header="Oops!" content={this.state.errorMessage}/>
+                    <Button loading={this.state.loading} primary>
+                        Create!
+                    </Button>
+                </Form>
             </Container>
 
         );
