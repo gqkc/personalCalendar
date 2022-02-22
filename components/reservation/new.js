@@ -19,7 +19,8 @@ class ReservationNew extends Component {
         email: "",
         start: "",
         end: "",
-        tag: ""
+        tag: "",
+        display:"none"
     };
     /**
      * Save the reservation given the id in props
@@ -28,21 +29,27 @@ class ReservationNew extends Component {
     saveReservation = async () => {
         try {
             const date = moment(this.state.date)
-            const startDate = date.set("hour", this.state.start).set("minute", 0);
-            const endDate = date.set("hour", this.state.end).set("minute", 0);
+
+            const startDate = date.set({"hour": parseInt(this.state.start), "minute": 0}).toDate();
+            const endDate = date.set({"hour": parseInt(this.state.end), "minute": 0}).toDate();
+
             // Fetch data from external API
             const reservation = {
                 email: this.state.email,
                 start: startDate,
                 end: endDate,
                 title: this.state.title,
+                tag: this.state.tag,
                 availabilityId: Math.abs(this.props.availabilityId)
             }
             await axios.post("/api/reservations", reservation)
-            window.location.reload(false)
+            //window.location.reload(false)
 
         } catch (err) {
             this.setState({errorMessage: err.message});
+        }
+        if (this.state.errorMessage==""){
+            this.setState({display:"flex"})
         }
     }
 
@@ -89,14 +96,14 @@ class ReservationNew extends Component {
                     </Form.Field>
                     <Form.Field>
                         <label>Start time</label>
-                        <Select placeholder='Time' options={hours} onChange={(start) => {
-                            this.setState({start: start})
+                        <Select placeholder='Time' options={hours} onChange={(e, data) => {
+                            this.setState({start: data.value})
                         }}/>
                     </Form.Field>
                     <Form.Field>
                         <label>End time</label>
-                        <Select placeholder='Time' options={hours} onChange={(end) => {
-                            this.setState({end: end})
+                        <Select placeholder='Time' options={hours} onChange={(e, data) => {
+                            this.setState({end: data.value})
                         }}/>
                     </Form.Field>
                     <Form.Field>
@@ -110,12 +117,14 @@ class ReservationNew extends Component {
                     </Form.Field>
                     <Form.Field>
                         <label>Tag</label>
-                        <Select options={tags_items} onChange={(tag) => {
-                            this.setState({tag: tag})
+                        <Select options={tags_items} onChange={(e, data) => {
+                            this.setState({tag: tags[data.value]})
                         }}/>
                     </Form.Field>
 
                     <Message error header="Oops!" content={this.state.errorMessage}/>
+                    <Message positive style={{display: this.state.display}} content="Please close!" header="Created!"/>
+
                     <Button loading={this.state.loading} primary>
                         Create!
                     </Button>

@@ -80,6 +80,7 @@ const routes = (app, db) => {
                 end: reservation.end,
                 title: reservation.title,
                 date: date,
+                tag: reservation.tag,
                 availabilityId: reservation.availabilityId
             })
             res.json(resa);
@@ -94,23 +95,29 @@ const routes = (app, db) => {
      * The email serve as a confirmation before setting a real oauth authentication
      */
     app.delete("/reservations", async function (req, res) {
-        if (req.query.id && req.query.mail) {
-            console.log("Deleting Reservation: " + req.query.id);
-            const reservation = await Reservation.findOne({
-                where: {id: parseInt(req.query.id), email: req.query.mail}
-            })
-            if (reservation == null) {
-                return res.status(400).send("no record with this id and email")
+        try {
+            if (req.query.id && req.query.mail) {
+                console.log("Deleting Reservation: " + req.query.id);
+                const reservation = await Reservation.findOne({
+                    where: {id: parseInt(req.query.id), email: req.query.mail}
+                })
+                if (reservation == null) {
+                    return res.status(400).send("no record with this id and email")
+                }
+                Reservation.destroy({
+                    where: {id: parseInt(req.query.id), email: req.query.mail}
+                }).then(() => {
+                    return res.status(200).send({})
+                }).catch(() => {
+                    return res.status(400).send("Not possible")
+                })
+            } else {
+                res.status(400).send("Please specify an id and mail");
             }
-            Reservation.destroy({
-                where: {id: parseInt(req.query.id), email: req.query.mail}
-            }).then(() => {
-                return res.status(200).send({})
-            }).catch(() => {
-                return res.status(400).send("Not possible")
-            })
-        } else {
-            res.status(400).send("Please specify an id and mail");
+        }
+        catch (error) {
+            res.status(500).send("Problem on the server :"+error)
+            
         }
     });
 }
