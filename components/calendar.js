@@ -15,20 +15,21 @@ import {colors, tags} from "../constants";
  */
 class Calendar extends Component {
     state = {
-        availabilities: [],
-        reservations: [],
+        items: [],
         open: false,
         openResa: false,
         current: ""
     };
 
     /**
-     * Populate availabilities on did mount
+     * On component mount, set items
      * @returns {Promise<void>}
      */
     async componentDidMount() {
-        await this.getAvailabilities();
+        const items = await this.getAvailabilities();
+        this.setState({items: items});
     }
+
 
     /**
      * Getting the tag associated color
@@ -45,7 +46,7 @@ class Calendar extends Component {
 
     /**
      * Populate state variables with availabilities and reservations
-     * @returns undefined
+     * @returns {Promise<{items: *[]}>}
      */
     async getAvailabilities() {
         let av_response = await axios.get("api/availabilities");
@@ -72,11 +73,26 @@ class Calendar extends Component {
                 start_time: moment(reservation.start),
                 end_time: moment(reservation.end),
                 canMove: false,
-                itemProps: {style: {background: this.getColor(reservation.tag)}}
+                itemProps: {
+                    style: {background: this.getColor(reservation.tag)}
+                }
             }
         });
 
-        this.setState({availabilities: availabilities, reservations: reservations});
+        return [...availabilities, ...reservations];
+    }
+
+    onItemClick(itemId, e, time) {
+        if (itemId > 0) {
+            this.setState({openResa: true, current: itemId})
+        } else {
+            this.setState({current: itemId, open: true})
+        }
+    }
+
+    async updateAvailabilities() {
+        const items = await this.getAvailabilities();
+        this.setState({items: items});
     }
 
 
@@ -87,53 +103,49 @@ class Calendar extends Component {
     render() {
         const groups = [{id: 1, title: 'Availabilities', height: 100}, {id: 2, title: 'Bookings', height: 100}]
         return (
-                <Container textAlign='center' style={{marginTop:50}}>
-                    <Segment>
-                        <Timeline
-                            groups={groups}
-                            items={[...this.state.availabilities, ...this.state.reservations]}
-                            defaultTimeStart={moment().add(-12, 'hour')}
-                            defaultTimeEnd={moment().add(12, 'hour')}
-                            onItemClick={(itemId, e, time) => {
-                                if (itemId > 0) {
-                                    this.setState({openResa: true, current: itemId})
-                                } else {
-                                    this.setState({current: itemId, open: true})
-                                }
-                            }
-                            }
+            <Container data-custom-attribute='Random content' textAlign='center' style={{marginTop: 50}}>
+                <Segment>
+                    <Timeline
+                        groups={groups}
+                        items={this.state.items}
+                        defaultTimeStart={moment().add(-12, 'hour')}
+                        defaultTimeEnd={moment().add(12, 'hour')}
+                        onItemClick={(i, e, t) => this.onItemClick(i, e, t)}
+                    />
+                </Segment>
+                <Modal
+                    size="tiny"
+                    closeIcon
+                    open={this.state.open}
+                    onClose={async () => {
+                        await this.updateAvailabilities();
+                        this.setState({open: false})
+                    }}
+                    onOpen={() => this.setState({open: true})}
+                >
+                    <Header content='Book meeting'/>
+                    <Modal.Content>
+                        <ReservationNew availabilityId={this.state.current}/>
+                    </Modal.Content>
+                </Modal>
+                <Modal
+                    size="mini"
+                    closeIcon
+                    open={this.state.openResa}
+                    onClose={async () => {
+                        await this.updateAvailabilities();
+                        this.setState({openResa: false});
 
-                        />
-                    </Segment>
-                    <Modal
-                        size="tiny"
-                        closeIcon
-                        open={this.state.open}
-                        onClose={() => this.setState({open: false})}
-                        onOpen={() => this.setState({open: true})}
-                    >
-                        <Header content='Book meeting'/>
-                        <Modal.Content>
-                            <ReservationNew availabilityId={this.state.current}/>
-                        </Modal.Content>
-                    </Modal>
-                    <Modal
-                        size="mini"
-                        closeIcon
-                        open={this.state.openResa}
-                        onClose={() => {
-                            this.setState({openResa: false});
-                            window.location.reload(false)
-                        }}
-                        onOpen={() => this.setState({openResa: true})}
-                    >
-                        <Header content='Delete Reservation'/>
-                        <Modal.Content>
-                            <ReservationDelete reservationId={this.state.current}/>
-                        </Modal.Content>
-                    </Modal>
+                    }}
+                    onOpen={() => this.setState({openResa: true})}
+                >
+                    <Header content='Delete Reservation'/>
+                    <Modal.Content>
+                        <ReservationDelete reservationId={this.state.current}/>
+                    </Modal.Content>
+                </Modal>
 
-                </Container>
+            </Container>
 
         )
     }
