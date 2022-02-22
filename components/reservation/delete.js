@@ -11,6 +11,7 @@ class ReservationDelete extends Component {
 
     state = {
         errorMessage: "",
+        display: "none",
         loading: false,
         email: "",
 
@@ -25,6 +26,9 @@ class ReservationDelete extends Component {
             await axios.delete(`/api/reservations?id=${this.props.reservationId}&mail=${this.state.email}`,)
         } catch (err) {
             this.setState({errorMessage: err.message});
+        }
+        if (this.state.errorMessage == "") {
+            this.setState({display: "flex"})
         }
     }
 
@@ -59,6 +63,7 @@ class ReservationDelete extends Component {
                         />
                     </Form.Field>
                     <Message error header="Oops!" content={this.state.errorMessage}/>
+                    <Message positive style={{display: this.state.display}} content="Please close!" header="Deleted"/>
                     <Button loading={this.state.loading} negative>
                         Delete
                     </Button>
